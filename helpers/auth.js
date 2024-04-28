@@ -57,9 +57,14 @@ const blacklistAuthenticationToken = (req, res, next) => {
     if (!bearer) {
         return res.status(401).json({ error: 'Unauthorized: No token provided' });
     }
-    const accessToken = bearer.split(" ")[1];
 
-    const cookies = req.cookies;
+    const accessToken = bearer.split(" ")[1];
+    const blacklistAccessToken = db.blacklistToken(accessToken);
+    Promise.all([blacklistAccessToken]).then(() => {
+        next();
+    });
+
+    /*const cookies = req.cookies;
     if (!cookies?.jwt) return res.sendStatus(401);
     const refreshToken = cookies.jwt;
 
@@ -69,7 +74,7 @@ const blacklistAuthenticationToken = (req, res, next) => {
     Promise.all([blacklistAccessToken, blacklistRefreshToken]).then(() => {
         res.cookie('jwt', null, {expires: new Date(0)});
         next();
-    });
+    });*/
 }
 
 module.exports = {createAuthenticateToken, verifyAuthenticateToken, createAuthenticateRefreshToken, verifyAuthenticateRefreshToken, blacklistAuthenticationToken};

@@ -36,7 +36,7 @@ user.login = async (record) => {
         const accessToken = createAuthenticateToken(record.username);
         return {status:200, user, accessToken, cookieParams};
     }
-    return {status: 401}
+    return {status: 400}
 }
 
 user.getStories = async (username) => {

@@ -5,7 +5,8 @@ const user = require('../business/user');
 const {verifyAuthenticateToken, blacklistAuthenticationToken} = require('../helpers/auth');
 
 var auth = [
-    "/stories"
+    "/stories",
+    "/username"
 ]
 
 router.use(auth,verifyAuthenticateToken);
@@ -31,6 +32,16 @@ router.get("/stories", async (req, res) => {
     }
 });
 
+router.get("/username", async (req, res) => {
+    try{
+        res.status(200).send(req.user);
+    }
+    catch(err){
+        console.log(err);
+        res.status(500).send("SOMETHING WENT WRONG!!");
+    }
+});
+
 router.post("/register", async (req, res) => {
     try{
         const response = await user.register(req.body);
@@ -49,8 +60,8 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try{
         const response = await user.login(req.body);
-        if(response.status === 401){
-            return res.status(response.status).json({ error: 'Invalid username or password' });
+        if(response.status === 400){
+             res.status(400).send("Invalid username or password");
         }
         res.cookie(response.cookieParams.name, response.cookieParams.value, response.cookieParams.options);
         res.status(response.status).json({token: response.accessToken});

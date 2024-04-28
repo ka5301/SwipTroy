@@ -6,7 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 var corsOptions = {
-  origin: 'http://127.0.0.1:5500',
+  origin: 'http://localhost:3000',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
