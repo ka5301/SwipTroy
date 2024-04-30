@@ -19,10 +19,10 @@ db.addUser = async (record) => {
 }
 
 db.getUser = async (username) => {
-    try{
-        return await user.find({username});
+    try {
+        return await user.find({ username });
     }
-    catch (err){
+    catch (err) {
         throw new Error(err);
     }
 }
@@ -34,7 +34,7 @@ db.saveUser = async (record) => {
         likes: record.likes
     }
 
-    return await user.findOneAndUpdate({_id:record._id},{$set:updates});
+    return await user.findOneAndUpdate({ _id: record._id }, { $set: updates });
 }
 
 db.addStory = async (record) => {
@@ -46,15 +46,15 @@ db.addStory = async (record) => {
         username: record.username,
         likes: 0
     });
-    
+
     return await storyRecord.save();
 }
 
-db.getStory = async(id = null) => {
-    try{
-        return (id == null)? await story.find({}): await story.find({_id: {$in: id}});
+db.getStory = async (id = null) => {
+    try {
+        return (id == null) ? await story.find({}) : await story.find({ _id: { $in: id } });
     }
-    catch (err){
+    catch (err) {
         throw new Error(err);
     }
 }
@@ -67,7 +67,7 @@ db.saveStory = async (record) => {
         category: record.category
     }
 
-    return await story.findOneAndUpdate({_id:record._id},{$set:updates});
+    return await story.findOneAndUpdate({ _id: record._id }, { $set: updates });
 }
 
 db.updateStoryLikes = async (record) => {
@@ -75,7 +75,7 @@ db.updateStoryLikes = async (record) => {
         likes: record.likes
     }
 
-    return await story.findOneAndUpdate({_id:record._id},{$set:updates});
+    return await story.findOneAndUpdate({ _id: record._id }, { $set: updates });
 }
 
 db.blacklistToken = async (token) => {
@@ -87,7 +87,7 @@ db.blacklistToken = async (token) => {
 }
 
 db.IsBlacklistedToken = async (token) => {
-    const r_token = await blacklistedToken.findOne({token});
+    const r_token = await blacklistedToken.findOne({ token });
     return r_token != null;
 }
 
